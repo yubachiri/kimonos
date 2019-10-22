@@ -2,9 +2,8 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import './App.css';
 import { makeStyles } from '@material-ui/styles'
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
+import { allKimonos as kimonos } from './Api';
 
 const useStyles = makeStyles({
   button: {
@@ -17,10 +16,7 @@ const useStyles = makeStyles({
 
 async function fetchKimonos(component) {
   component.setState({ isLoading: true })
-  const url = "https://kimonos.microcms.io/api/v1/kimonos";
-  const resp = await axios.get(url, {
-    headers: { 'X-API-KEY': process.env.REACT_APP_CMS_API_KEY }
-  });
+  const resp = await kimonos();
   component.setState({ isLoading: false, kimonos: resp.data.contents });
 }
 
