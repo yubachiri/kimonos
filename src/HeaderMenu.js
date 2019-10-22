@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+function KimonoIcon() {
+  return <img src={`${process.env.PUBLIC_URL}/kimono-icon.png`} alt="kimono-icon" style={{objectFit: 'contain', width: 30, height: 30, marginLeft: 10}} />;
+}
+
 export default function HeaderMenu(props) {
   const history = useHistory();
 
@@ -30,6 +34,7 @@ export default function HeaderMenu(props) {
         <Toolbar>
           <Typography variant="h6" className={classes.title} onClick={handleToRootPage} style={{cursor: 'pointer'}}>
             Kimonos
+            <KimonoIcon />
           </Typography>
         </Toolbar>
       </AppBar>
