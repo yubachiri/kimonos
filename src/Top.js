@@ -15,19 +15,13 @@ const useStyles = makeStyles({
   },
 });
 
-async function fetchKimonos(props) {
-  props.component.setState({ isLoading: true })
+async function fetchKimonos(component) {
+  component.setState({ isLoading: true })
   const url = "https://kimonos.microcms.io/api/v1/kimonos";
   const resp = await axios.get(url, {
     headers: { 'X-API-KEY': process.env.REACT_APP_CMS_API_KEY }
   });
-  props.component.setState({ isLoading: false, kimonos: resp.data.contents });
-}
-
-function FetchButton(props) {
-  return (
-    <Button variant="contained" color="secondary" onClick={() => fetchKimonos(props)}>一覧を取得する</Button>
-  );
+  component.setState({ isLoading: false, kimonos: resp.data.contents });
 }
 
 // 一覧画面
@@ -43,35 +37,36 @@ class Top extends React.Component {
   render() {
     let contents;
     if (this.state.isLoading) {
-      contents = <FetchButton component={this} />;
+      contents = <p>now loading...</p>;
     } else {
       contents = <KimonoLinks kimonos={this.state.kimonos} />;
     }
 
     return (
       <div className="Top">
-        <h1>Hello, React!</h1>
-        <p>this is top page.</p>
-        <p>list of contents</p>
+        <h1>My Kimonos</h1>
         {contents}
       </div>
     );
+  }
+
+  componentDidMount() {
+    fetchKimonos(this);
   }
 }
 
 function KimonoLinks(props) {
   const classes = useStyles();
 
-  const ids = props.kimonos.map((kimono) => {
-    return kimono.id;
-  });
-
-  const listItems = ids.map((id) => (
-    <Grid item xs={6} key={id}>
-      <Link to={`/detail/${id}`}>
-        <Button variant="contained" color="secondary">
-          detail_{id}
-        </Button>
+  const listItems = props.kimonos.map((kimono) => (
+    <Grid item xs={6} key={kimono.id}>
+      <Link to={`/detail/${kimono.id}`} style={{ textDecoration: 'none' }}>
+        <img
+          src={kimono.image.url}
+          alt="kimono-image"
+          style={{ objectFit: 'contain', width: 250, height: 250 }}
+        />
+        <h5>{kimono.nickname}</h5>
       </Link>
     </Grid>
   ));
