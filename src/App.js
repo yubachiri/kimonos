@@ -1,13 +1,15 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { makeStyles } from '@material-ui/styles'
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+
+import './App.css';
 import theme from './theme'
+import HeaderMenu from './HeaderMenu';
 import Top from './Top';
 import Detail from './Detail';
-import HeaderMenu from './HeaderMenu';
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   button: {
@@ -39,16 +41,18 @@ class App extends React.Component {
         <Router>
           <div className="App">
             <HeaderMenu />
-            <Link to='/'>
-              <Button variant="contained" color="primary">
-                top
-              </Button>
-            </Link>
+            <Container style={{marginTop: 50}}>
+              <Link to='/'>
+                <Button variant="contained" color="primary">
+                  top
+                </Button>
+              </Link>
 
-            <KimonoLinks />
+              <KimonoLinks />
 
-            <Route path='/' exact component={Top} />
-            <Route path='/detail/:id' exact component={Detail} />
+              <Route path='/' exact component={Top} />
+              <Route path='/detail/:id' exact component={Detail} />
+            </Container>
           </div>
         </Router>
       </MuiThemeProvider>
