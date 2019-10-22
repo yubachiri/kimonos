@@ -21,8 +21,7 @@ async function fetchKimonos(props) {
   const resp = await axios.get(url, {
     headers: { 'X-API-KEY': process.env.REACT_APP_CMS_API_KEY }
   });
-  console.log(resp.data.contents[0]);
-  props.component.setState({ isLoading: false })
+  props.component.setState({ isLoading: false, kimonos: resp.data.contents });
 }
 
 function FetchButton(props) {
@@ -37,6 +36,7 @@ class Top extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
+      kimonos: [],
     };
   }
 
@@ -45,7 +45,7 @@ class Top extends React.Component {
     if (this.state.isLoading) {
       contents = <FetchButton component={this} />;
     } else {
-      contents = <KimonoLinks />;
+      contents = <KimonoLinks kimonos={this.state.kimonos} />;
     }
 
     return (
@@ -59,10 +59,13 @@ class Top extends React.Component {
   }
 }
 
-function KimonoLinks() {
+function KimonoLinks(props) {
   const classes = useStyles();
 
-  const ids = [1, 2, 3, 4];
+  const ids = props.kimonos.map((kimono) => {
+    return kimono.id;
+  });
+
   const listItems = ids.map((id) => (
     <Grid item xs={6} key={id}>
       <Link to={`/detail/${id}`}>
