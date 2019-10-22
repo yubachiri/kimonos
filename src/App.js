@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import { MuiThemeProvider, makeStyles } from '@material-ui/core/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/styles'
 import theme from './theme'
 import Top from './Top';
 import Detail from './Detail';
@@ -8,39 +9,51 @@ import HeaderMenu from './HeaderMenu';
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
-function App() {
-  const useStyles = makeStyles(theme => ({
-    button: {
-      margin: '30px',
-    },
-  }));
+const useStyles = makeStyles({
+  button: {
+    margin: '30px',
+  },
+  links: {
+    margin: '30px',
+  },
+});
 
+function KimonoLinks() {
   const classes = useStyles();
 
-  return (
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <div className="App">
-          <HeaderMenu />
-          <Link to='/'>
-            <Button variant="contained" color="primary" className={classes.button}>
-              top
-            </Button>
-          </Link>
-          
-          {/* TODO: idかなんか渡して表示切り替え */}
-          <Link to='/detail/1'>
-            <Button variant="contained" color="secondary" className={classes.button}>
-              detail
-            </Button>
-          </Link>
+  const ids = [1, 2, 3];
+  const listItems = ids.map((id) => (
+    <Link to={`/detail/${id}`} key={id}>
+      <Button variant="contained" color="secondary">
+        detail_{id}
+      </Button>
+    </Link>
+  ));
+  return (<div className={classes.links}>{listItems}</div>);
+}
 
-          <Route path='/' exact component={Top} />
-          <Route path='/detail/:id' exact component={Detail} />
-        </div>
-      </Router>
-    </MuiThemeProvider>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <div className="App">
+            <HeaderMenu />
+            <Link to='/'>
+              <Button variant="contained" color="primary">
+                top
+              </Button>
+            </Link>
+
+            <KimonoLinks />
+
+            <Route path='/' exact component={Top} />
+            <Route path='/detail/:id' exact component={Detail} />
+          </div>
+        </Router>
+      </MuiThemeProvider>
+    );
+  }
 }
 
 export default App;
