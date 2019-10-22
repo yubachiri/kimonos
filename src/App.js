@@ -27,15 +27,16 @@ function App() {
               top
             </Button>
           </Link>
-          <Link to='/detail'>
+          
+          {/* TODO: idかなんか渡して表示切り替え */}
+          <Link to='/detail/1'>
             <Button variant="contained" color="secondary" className={classes.button}>
-              {/* TODO: idかなんか渡して表示切り替え */}
               detail
             </Button>
           </Link>
 
           <Route path='/' exact component={Top} />
-          <Route path='/detail' exact component={Detail} />
+          <Route path='/detail/:id' exact component={Detail} />
         </div>
       </Router>
     </MuiThemeProvider>
